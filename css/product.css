@@ -1,0 +1,59 @@
+/* ============================================
+   阿晚科技 - 产品页样式 (product.css)
+   ============================================ */
+.plist { background: var(--bg-alt); }
+.pfilt { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.pft { display: flex; gap: 6px; flex-wrap: wrap; }
+.pft button {
+  padding: 6px 16px; border-radius: 18px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text-secondary); font-size: 0.82rem;
+  cursor: pointer; transition: all var(--transition);
+}
+.pft button.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+.psrch input {
+  padding: 6px 12px; border: 1px solid var(--border); border-radius: var(--radius);
+  font-size: 0.82rem; width: 200px; background: var(--bg); color: var(--text);
+}
+.psrch input:focus { outline: none; border-color: var(--primary); }
+
+.pcd { background: var(--bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: all var(--transition); }
+.pcd:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.pcd-i { width: 100%; aspect-ratio: 16/10; overflow: hidden; position: relative; }
+.pcd-i img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.pcd:hover .pcd-i img { transform: scale(1.05); }
+.pcd-badge {
+  position: absolute; top: 10px; left: 10px; background: var(--accent);
+  color: #fff; padding: 2px 10px; border-radius: 14px; font-size: 0.7rem; font-weight: 600;
+}
+.pcd-b { padding: 16px; }
+.pcd-b h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+.pcd-b p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px; }
+.pcd-feat li { font-size: 0.8rem; color: var(--text-secondary); padding: 2px 0; }
+.pcd-feat li::before { content: '✓ '; color: var(--primary); font-weight: 700; }
+.pcd-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.pcd-tags span { padding: 2px 8px; background: rgba(74,158,222,0.08); color: var(--primary); border-radius: 10px; font-size: 0.7rem; }
+
+/* 产品详情 */
+.pdet { background: var(--bg-alt); }
+.pdet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.pgal { position: sticky; top: 80px; }
+.pmain { border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 10px; }
+.pmain img { width: 100%; height: 320px; object-fit: cover; }
+.pthumbs { display: flex; gap: 8px; }
+.pthum { width: 64px; height: 64px; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: all var(--transition); }
+.pthum.on { border-color: var(--primary); }
+.pthum img { width: 100%; height: 100%; object-fit: cover; }
+.pinfo h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+.pinfo .desc { color: var(--text-secondary); line-height: 1.8; margin-bottom: 18px; font-size: 0.9rem; }
+.pspecs { background: var(--bg); border-radius: var(--radius); padding: 16px; margin-bottom: 18px; }
+.pspecs h3 { font-size: 0.95rem; margin-bottom: 12px; }
+.srow { display: flex; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+.srow:last-child { border-bottom: none; }
+.slbl { width: 110px; color: var(--text-muted); flex-shrink: 0; }
+.sval { color: var(--text); font-weight: 500; }
+.rel { margin-top: 48px; }
+
+@media(max-width:768px){
+  .pdet-grid { grid-template-columns: 1fr; }
+  .pgal { position: static; }
+}

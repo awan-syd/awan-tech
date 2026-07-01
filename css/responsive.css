@@ -1,0 +1,26 @@
+@media(max-width:1024px){
+  .hero { height: 500px; }
+  .hs-c h1 { font-size: 1.8rem; }
+  .ft-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats .si2 + .si2 { border-left: none; }
+}
+@media(max-width:768px){
+  .hero { height: 440px; }
+  .hs-c h1 { font-size: 1.4rem; }
+  .hs-c p { font-size: 0.88rem; }
+  .hs-btns .btn { width: 100%; }
+  .stats .cnt { font-size: 1.6rem; }
+  .sec-title h2 { font-size: 1.4rem; }
+  .bread h1 { font-size: 1.3rem; }
+  .stats .si2 { border-left: none !important; }
+}
+@media(max-width:480px){
+  .hero { height: 380px; }
+  .hs-c h1 { font-size: 1.2rem; }
+  .sec { padding: 40px 0; }
+  .sec-title h2 { font-size: 1.25rem; }
+  .ft-grid { grid-template-columns: 1fr; }
+  .snav { display: none; }
+  .btt { bottom: 16px; right: 16px; width: 36px; height: 36px; font-size: 1rem; }
+  .fchat { bottom: 60px; right: 16px; width: 44px; height: 44px; }
+}

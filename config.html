@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>站点配置 - 阿晚科技</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .cfg { background: var(--bg-alt); }
+    .cfg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .cfg-card { background: var(--bg); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); }
+    .cfg-card h3 { font-size: 1rem; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); }
+    .cfg-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .cfg-item:last-child { border-bottom: none; }
+    .cfg-lbl { color: var(--text-muted); }
+    .cfg-val { color: var(--text); font-weight: 500; }
+    .cfg-note { color: var(--text-muted); font-size: 0.82rem; line-height: 1.8; margin-top: 12px; }
+    @media(max-width:768px){ .cfg-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="loader" id="pageLoader"><div class="spinner"></div></div>
+  <div class="bar-notice"><div class="wrap"><span class="tag">公告</span><div class="scroll-box"><div class="scroll-txt"><span>阿晚科技荣获2025年度电商技术服务创新企业称号！</span><span>全新电商SaaS 3.0版本上线，功能全面升级</span><span>新客户首单享8折优惠，限时活动中，欢迎咨询！</span></div></div></div></div>
+  <header class="mhdr" id="mainHeader"><div class="wrap"><div class="logo"><div class="ico">A</div><a href="index.html">阿晚科技</a></div>
+    <ul class="nmenu">
+      <li><a href="index.html">首页</a></li>
+      <li><a href="pages/about.html">关于我们</a></li>
+      <li class="ndrop"><a href="pages/products.html">产品中心</a><ul class="dd"><li><a href="pages/products.html">全部产品</a></li><li><a href="pages/product-detail.html">电商商城SaaS</a></li><li><a href="pages/product-detail.html">直播带货系统</a></li><li><a href="pages/product-detail.html">私域小程序</a></li><li><a href="pages/product-detail.html">仓储管理系统</a></li></ul></li>
+      <li class="ndrop"><a href="pages/cases.html">工程案例</a><ul class="dd"><li><a href="pages/cases.html">全部案例</a></li><li><a href="pages/case-detail.html">线下实体商家</a></li><li><a href="pages/case-detail.html">线上品牌店铺</a></li><li><a href="pages/case-detail.html">直播电商项目</a></li></ul></li>
+      <li class="ndrop"><a href="pages/news.html">新闻资讯</a><ul class="dd"><li><a href="pages/news.html">企业动态</a></li><li><a href="pages/news.html">电商行业干货</a></li><li><a href="pages/news.html">运营技巧</a></li></ul></li>
+      <li><a href="pages/qualifications.html">资质荣誉</a></li>
+      <li><a href="pages/contact.html">联系我们</a></li>
+    </ul>
+    <div class="htools"><button id="btnSearch" title="搜索">&#128269;</button><button id="themeToggle" title="切换主题"><span id="theme-icon">&#9790;</span></button><button class="ham" id="hamburgerBtn" title="菜单"><span></span><span></span><span></span></button></div>
+  </div></header>
+  <div class="mnav-o" id="mobileNavOverlay"></div>
+  <div class="mnav" id="mobileNavPanel"><div class="mnav-hd"><div class="logo"><div class="ico">A</div>阿晚科技</div><button class="mnav-cl" id="mobileNavClose">&#10005;</button></div>
+    <ul class="mnav-l">
+      <li><a href="index.html">首页</a></li>
+      <li><a href="pages/about.html">关于我们</a></li>
+      <li><div class="mstog"><a href="pages/products.html">产品中心</a><span class="arr">&#9660;</span></div><ul class="msub"><li><a href="pages/products.html">全部产品</a></li><li><a href="pages/product-detail.html">电商商城SaaS</a></li><li><a href="pages/product-detail.html">直播带货系统</a></li><li><a href="pages/product-detail.html">私域小程序</a></li><li><a href="pages/product-detail.html">仓储管理系统</a></li></ul></li>
+      <li><div class="mstog"><a href="pages/cases.html">工程案例</a><span class="arr">&#9660;</span></div><ul class="msub"><li><a href="pages/cases.html">全部案例</a></li><li><a href="pages/case-detail.html">线下实体商家</a></li><li><a href="pages/case-detail.html">线上品牌店铺</a></li><li><a href="pages/case-detail.html">直播电商项目</a></li></ul></li>
+      <li><div class="mstog"><a href="pages/news.html">新闻资讯</a><span class="arr">&#9660;</span></div><ul class="msub"><li><a href="pages/news.html">企业动态</a></li><li><a href="pages/news.html">电商行业干货</a></li><li><a href="pages/news.html">运营技巧</a></li></ul></li>
+      <li><a href="pages/qualifications.html">资质荣誉</a></li>
+      <li><a href="pages/contact.html">联系我们</a></li>
+    </ul>
+  </div>
+  <section class="bread"><div class="wrap"><h1>站点配置</h1><div class="breadcrumb"><a href="index.html">首页</a><span>&gt;</span><span>站点配置</span></div></div></section>
+  <section class="sec cfg"><div class="wrap"><div class="sec-title fi"><h2>配置说明</h2><p>本页面用于记录站点的基本配置信息和修改指南</p></div>
+    <div class="cfg-grid">
+      <div class="cfg-card fi"><h3>基本信息</h3>
+        <div class="cfg-item"><span class="cfg-lbl">企业名称</span><span class="cfg-val">阿晚科技</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">联系电话</span><span class="cfg-val">6666-6666-6666</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">联系邮箱</span><span class="cfg-val">158964224@qq.com</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">企业地址</span><span class="cfg-val">安徽省人民政府</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">ICP备案号</span><span class="cfg-val">皖ICP备XXXXXXXX号-1</span></div>
+      </div>
+      <div class="cfg-card fi"><h3>SEO配置</h3>
+        <div class="cfg-item"><span class="cfg-lbl">Title关键词</span><span class="cfg-val">电商技术服务,电商SaaS,直播带货</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">Description</span><span class="cfg-val">阿晚科技-一站式全链路电商技术服务商</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">站点语言</span><span class="cfg-val">zh-CN</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">站点主题色</span><span class="cfg-val">#4a9ede</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">版权年份</span><span class="cfg-val">2026</span></div>
+      </div>
+      <div class="cfg-card fi"><h3>页面结构</h3>
+        <div class="cfg-item"><span class="cfg-lbl">总页面数</span><span class="cfg-val">11页</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">CSS文件数</span><span class="cfg-val">9个</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">JS文件数</span><span class="cfg-val">4个</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">图片源</span><span class="cfg-val">Unsplash (商用免费)</span></div>
+        <div class="cfg-item"><span class="cfg-lbl">响应式断点</span><span class="cfg-val">1024px / 768px / 480px</span></div>
+      </div>
+      <div class="cfg-card fi"><h3>修改指南</h3>
+        <p class="cfg-note">
+          1. 修改企业名称：搜索"阿晚科技"批量替换<br>
+          2. 修改联系方式：搜索"6666-6666-6666"和"158964224@qq.com"<br>
+          3. 修改主题色：编辑 css/global.css 中的 --primary 变量<br>
+          4. 修改ICP备案：搜索"皖ICP备"替换备案号<br>
+          5. 替换图片：将 unsplash 链接替换为实际图片路径<br>
+          6. 修改公告：搜索 .scroll-txt 修改公告内容<br>
+          7. 新增页面：复制现有HTML模板，修改内容和链接
+        </p>
+      </div>
+    </div>
+  </div></section>
+  <footer class="ft"><div class="wrap"><div class="ft-grid">
+    <div><h4>阿晚科技</h4><p style="font-size:0.85rem;line-height:1.8;margin-bottom:10px">专注电商技术服务领域，以技术创新驱动商业增长。</p></div>
+    <div><h4>关于我们</h4><a href="pages/about.html">公司简介</a><a href="pages/about.html">企业文化</a><a href="pages/about.html">发展历程</a><a href="pages/about.html">团队介绍</a><a href="pages/qualifications.html">资质荣誉</a></div>
+    <div><h4>产品中心</h4><a href="pages/products.html">电商商城SaaS</a><a href="pages/products.html">直播带货系统</a><a href="pages/products.html">私域小程序</a><a href="pages/products.html">仓储管理系统</a><a href="pages/products.html">营销工具箱</a></div>
+    <div><h4>新闻资讯</h4><a href="pages/news.html">企业动态</a><a href="pages/news.html">电商干货</a><a href="pages/news.html">运营技巧</a><a href="pages/news.html">媒体报道</a></div>
+    <div><h4>联系方式</h4><p>6666-6666-6666</p><p>158964224@qq.com</p><p>安徽省人民政府</p><p>周一至周五 9:00-18:00</p></div>
+  </div><div class="ft-copy">&copy; 阿晚科技 版权所有 | 电商技术服务服务商 | <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备XXXXXXXX号-1</a></div></div></footer>
+  <div class="snav"><a href="index.html" title="首页">&#8962;</a><a href="pages/about.html" title="关于我们">&#9733;</a><a href="pages/products.html" title="产品中心">&#9730;</a><a href="pages/cases.html" title="工程案例">&#127942;</a><a href="pages/contact.html" title="联系我们">&#9993;</a></div>
+  <div class="srch-o" id="searchOverlay"><div class="srch-b"><input type="text" placeholder="输入关键词搜索..." id="searchInput"><p>按 Enter 键搜索，或按 ESC 关闭</p><button class="mnav-cl" style="position:absolute;top:10px;right:14px" id="searchClose">&#10005;</button></div></div>
+  <div class="cp-o" id="chatPopupOverlay"><div class="cp"><div class="cp-hd"><h3>在线客服</h3><button class="cp-cl" id="chatPopupClose">&#10005;</button></div><div class="cp-bd"><p>请选择您偏好的联系方式</p><div class="cp-m"><div class="cp-mi" data-channel="wechat"><span class="ic">&#128247;</span><span>微信咨询</span></div><div class="cp-mi" data-channel="phone"><span class="ic">&#128222;</span><span>电话咨询</span></div><div class="cp-mi" data-channel="form"><span class="ic">&#9993;</span><span>表单留言</span></div></div></div></div></div>
+  <button class="fchat" id="floatingChatBtn" title="在线咨询">&#128172;</button>
+  <button class="btt" id="backToTop" title="返回顶部">&#9650;</button>
+  <script src="js/main.js"></script>
+  <script src="js/slider.js"></script>
+  <script src="js/form-validate.js"></script>
+  <script src="js/product-filter.js"></script>
+<script>
+window.AGNES_CONFIG = { apiUrl: '' };
+</script>
+<script src="js/agnes-ai.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+/* ============================================
+   企业官网模板 - 字体图标 (iconfont.css)
+   使用Unicode字符作为图标，无需外部字体文件
+   ============================================ */
+
+/* 常用图标Unicode映射 */
+.icon-home::before { content: '\E001'; }
+.icon-about::before { content: '\E002'; }
+.icon-product::before { content: '\E003'; }
+.icon-case::before { content: '\E004'; }
+.icon-news::before { content: '\E005'; }
+.icon-contact::before { content: '\E006'; }
+.icon-service::before { content: '\E007'; }
+.icon-cert::before { content: '\E008'; }
+.icon-wechat::before { content: '\E009'; }
+.icon-phone::before { content: '\E00A'; }
+.icon-email::before { content: '\E00B'; }
+.icon-location::before { content: '\E00C'; }
+.icon-clock::before { content: '\E00D'; }
+.icon-check::before { content: '\2713'; }
+.icon-arrow::before { content: '\203A'; }
+.icon-arrow-left::before { content: '\2039'; }
+.icon-chevron-down::before { content: '\25BC'; }
+.icon-chevron-up::before { content: '\25B2'; }
+.icon-chevron-left::before { content: '\25C0'; }
+.icon-chevron-right::before { content: '\25B6'; }
+.icon-close::before { content: '\2715'; }
+.icon-menu::before { content: '\2630'; }
+.icon-search::before { content: '\26B2'; }
+.icon-theme::before { content: '\2600'; }
+.icon-theme-dark::before { content: '\263D'; }
+.icon-top::before { content: '\25B2'; }
+.icon-chat::before { content: '\F086'; }
+.icon-star::before { content: '\2605'; }
+.icon-badge::before { content: '\F092'; }
+.icon-award::before { content: '\F03E'; }
+.icon-team::before { content: '\F0C0'; }
+.icon-building::before { content: '\F0F5'; }
+.icon-globe::before { content: '\F0AC'; }
+.icon-facebook::before { content: '\F09A'; }
+.icon-twitter::before { content: '\F099'; }
+.icon-linkedin::before { content: '\F0E1'; }
+.icon-weibo::before { content: '\F18A'; }
+
+/* 图标字体大小基准 */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-size: 1em;
+  line-height: 1;
+}

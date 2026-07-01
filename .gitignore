@@ -1,0 +1,7 @@
+node_modules/
+.env
+.vscode/
+*.log
+.DS_Store
+pages - 副本/
+server - 副本/

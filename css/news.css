@@ -1,0 +1,54 @@
+/* ============================================
+   阿晚科技 - 新闻页样式 (news.css)
+   ============================================ */
+.nlist { background: var(--bg-alt); }
+.nl { display: grid; grid-template-columns: 1fr 300px; gap: 32px; }
+.nl-main .ni { display: flex; gap: 16px; background: var(--bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 16px; transition: all var(--transition); }
+.nl-main .ni:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.nl-main .ni-i { width: 220px; min-height: 140px; flex-shrink: 0; }
+.nl-main .ni-i img { width: 100%; height: 100%; object-fit: cover; }
+.nl-main .ni-b { padding: 16px 16px 16px 0; display: flex; flex-direction: column; justify-content: center; }
+.nl-main .ni-cat { display: inline-block; background: rgba(74,158,222,0.08); color: var(--primary); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 600; margin-bottom: 6px; width: fit-content; }
+.nl-main .ni h3 { font-size: 0.95rem; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
+.nl-main .ni p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.nl-main .ni-meta { font-size: 0.75rem; color: var(--text-muted); }
+
+/* 侧边栏 */
+.ns .sw { background: var(--bg); border-radius: var(--radius-lg); padding: 18px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+.ns .sw h4 { font-size: 0.9rem; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--primary); }
+.ns .wcat li { padding: 7px 0; border-bottom: 1px solid var(--border); }
+.ns .wcat li:last-child { border-bottom: none; }
+.ns .wcat li a { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: 0.82rem; transition: color var(--transition); }
+.ns .wcat li a:hover { color: var(--primary); }
+.ns .wcat li a .ct { background: var(--bg-alt); padding: 1px 7px; border-radius: 8px; font-size: 0.7rem; }
+.ns .whot li { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.ns .whot li:last-child { border-bottom: none; }
+.ns .whot .hn { width: 24px; height: 24px; background: var(--primary); color: #fff; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+.ns .whot .hn:not(:first-child) { background: var(--bg-alt); color: var(--text-muted); }
+.ns .whot h5 { font-size: 0.82rem; font-weight: 500; line-height: 1.4; }
+.ns .whot h5 a { color: var(--text); }
+.ns .whot h5 a:hover { color: var(--primary); }
+
+/* 新闻详情 */
+.ndet { background: var(--bg); }
+.ndet-body { max-width: 800px; margin: 0 auto; }
+.ndet-body h1 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.ndet-meta { display: flex; gap: 16px; color: var(--text-muted); font-size: 0.82rem; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.ndet-cover { width: 100%; height: 300px; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 24px; }
+.ndet-cover img { width: 100%; height: 100%; object-fit: cover; }
+.ndet-text { color: var(--text-secondary); line-height: 2; font-size: 0.92rem; }
+.ndet-text h2 { font-size: 1.15rem; color: var(--text); margin: 22px 0 12px; }
+.ndet-text h3 { font-size: 1rem; color: var(--text); margin: 18px 0 10px; }
+.ndet-text p { margin-bottom: 14px; }
+.ndet-text img { border-radius: var(--radius); margin: 16px 0; }
+.ndet-text blockquote { border-left: 3px solid var(--primary); padding: 12px 16px; background: var(--bg-alt); border-radius: 0 var(--radius) var(--radius) 0; margin: 16px 0; color: var(--text-secondary); font-style: italic; font-size: 0.9rem; }
+.ndet-nav { display: flex; justify-content: space-between; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); gap: 12px; }
+.ndet-nav a { flex: 1; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.85rem; color: var(--text); transition: all var(--transition); }
+.ndet-nav a:hover { border-color: var(--primary); color: var(--primary); }
+
+@media(max-width:768px){
+  .nl { grid-template-columns: 1fr; }
+  .ni { flex-direction: column; }
+  .ni-i { width: 100%; min-height: 160px; }
+  .ni-b { padding: 14px; }
+}

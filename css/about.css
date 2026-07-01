@@ -1,0 +1,82 @@
+/* ============================================
+   阿晚科技 - 关于我们/联系我们/资质页样式 (about.css)
+   ============================================ */
+.acom { background: var(--bg); }
+.acom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.acom-img { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+.acom-img img { width: 100%; height: 320px; object-fit: cover; }
+.acom-txt h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 14px; color: var(--text); }
+.acom-txt p { color: var(--text-secondary); line-height: 1.8; margin-bottom: 10px; font-size: 0.9rem; }
+
+/* 文化 */
+.cult-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
+.cult-card { text-align: center; padding: 28px 16px; background: var(--bg); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: all var(--transition); }
+.cult-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.cult-card .ci { font-size: 2.2rem; margin-bottom: 12px; }
+.cult-card h4 { font-size: 0.95rem; margin-bottom: 6px; color: var(--text); }
+.cult-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* 优势 */
+.adv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+.adv-card { text-align: center; padding: 32px 20px; background: var(--bg); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: all var(--transition); border-top: 3px solid transparent; }
+.adv-card:hover { transform: translateY(-3px); border-top-color: var(--primary); }
+.adv-card .ai { font-size: 2.2rem; margin-bottom: 12px; }
+.adv-card h4 { font-size: 0.95rem; margin-bottom: 8px; color: var(--text); }
+.adv-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* 发展历程 */
+.tl { position: relative; max-width: 720px; margin: 40px auto 0; padding: 16px 0; }
+.tl::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--border); transform: translateX(-50%); }
+.tl-i { display: flex; align-items: center; margin-bottom: 24px; position: relative; }
+.tl-i:nth-child(odd) { flex-direction: row-reverse; }
+.tl-i:nth-child(even) { text-align: right; }
+.tl-con { width: 45%; padding: 16px; background: var(--bg); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.tl-con h4 { color: var(--primary); font-size: 1rem; margin-bottom: 4px; }
+.tl-con p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+.tl-dot { position: absolute; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; background: var(--primary); border-radius: 50%; border: 2px solid var(--bg); z-index: 1; }
+
+/* 团队 */
+.tm-card { text-align: center; padding: 24px 16px; background: var(--bg); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: all var(--transition); }
+.tm-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.tm-av { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 12px; overflow: hidden; border: 2px solid var(--primary); }
+.tm-av img { width: 100%; height: 100%; object-fit: cover; }
+.tm-card h4 { font-size: 0.95rem; color: var(--text); margin-bottom: 3px; }
+.tm-card .tr { font-size: 0.8rem; color: var(--primary); font-weight: 500; margin-bottom: 8px; }
+.tm-card p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* 联系我们 */
+.ctc { background: var(--bg-alt); }
+.ctc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.ctc-info { display: grid; gap: 12px; }
+.ctc-card { display: flex; gap: 14px; padding: 16px; background: var(--bg); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.ctc-card .ci2 { width: 44px; height: 44px; background: rgba(74,158,222,0.08); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--primary); flex-shrink: 0; }
+.ctc-card h4 { font-size: 0.88rem; color: var(--text); margin-bottom: 3px; }
+.ctc-card p { font-size: 0.82rem; color: var(--text-secondary); }
+.ctc-map { margin-top: 20px; border-radius: var(--radius); height: 180px; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.85rem; border: 1px dashed var(--border); }
+
+/* 资质荣誉 */
+.qr { background: var(--bg); }
+.qr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.qr-card { text-align: center; padding: 26px 14px; background: var(--bg); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: all var(--transition); }
+.qr-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.qr-card .qi { font-size: 2.8rem; margin-bottom: 12px; }
+.qr-card h4 { font-size: 0.88rem; color: var(--text); margin-bottom: 5px; }
+.qr-card p { font-size: 0.75rem; color: var(--text-muted); }
+.qr-card .qy { display: inline-block; background: rgba(74,158,222,0.08); color: var(--primary); padding: 2px 8px; border-radius: 8px; font-size: 0.68rem; font-weight: 600; margin-top: 6px; }
+
+@media(max-width:1024px){
+  .cult-grid { grid-template-columns: repeat(2, 1fr); }
+  .adv-grid { grid-template-columns: repeat(2, 1fr); }
+  .qr-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media(max-width:768px){
+  .acom-grid, .ctc-grid { grid-template-columns: 1fr; gap: 24px; }
+  .cult-grid, .adv-grid, .qr-grid { grid-template-columns: repeat(2, 1fr); }
+  .tl::before { left: 16px; }
+  .tl-i, .tl-i:nth-child(odd) { flex-direction: row; text-align: left; }
+  .tl-con { width: calc(100% - 44px); margin-left: 44px; }
+  .tl-dot { left: 16px; }
+}
+@media(max-width:480px){
+  .cult-grid, .adv-grid, .qr-grid { grid-template-columns: 1fr; }
+}

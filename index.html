@@ -1,0 +1,594 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="阿晚科技 - 一站式全链路电商技术服务商，深耕电商数字化，为中小商家提供建站、运营、系统开发全方案">
+  <meta name="keywords" content="电商技术服务,电商SaaS,直播带货,小程序开发,仓储管理,阿晚科技">
+  <title>阿晚科技 - 一站式全链路电商技术服务商</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- ====== 阿晚AI助手样式（新增） ====== -->
+  <style>
+  #agnes-btn {
+    position: fixed; bottom: 100px; right: 24px; width: 52px; height: 52px;
+    border-radius: 50%; background: var(--primary,#536480); color: #fff; border: none;
+    cursor: pointer; font-size: 24px; box-shadow: 0 4px 16px rgba(83,100,128,0.25);
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+    user-select: none; -webkit-user-select: none;
+  }
+  #agnes-btn:hover { transform: scale(1.1); background: var(--primary-hover,#475775); }
+  #agnes-btn.dragging { transition: none !important; transform: none !important; cursor: move; }
+  #agnes-panel {
+    position: fixed; bottom: 162px; right: 24px; width: 360px;
+    max-width: calc(100vw - 48px); height: 480px; max-height: calc(100vh - 200px);
+    background: #343F51; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    z-index: 9998; display: none; flex-direction: column; overflow: hidden;
+    border: 1px solid #536480;
+  }
+  #agnes-panel.on { display: flex; }
+  #agnes-panel .ap-hd {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #343F51, #536480);
+    color: #E5EEFF;
+    border-radius: 15px 15px 0 0;
+  }
+  #agnes-panel .ap-hd h3 { font-size: 15px; font-weight: 600; }
+  #agnes-panel .ap-hd .ap-cl {
+    background: none; border: none; color: #E5EEFF; font-size: 18px;
+    cursor: pointer; opacity: 0.85; padding: 2px 6px; border-radius: 4px;
+  }
+  #agnes-panel .ap-hd .ap-cl:hover { opacity: 1; background: rgba(255,255,255,0.1); }
+  #agnes-panel .ap-bd { flex: 1; overflow-y: auto; padding: 14px 16px; background: #1D242E; }
+  #agnes-panel .ap-bd .msg { margin-bottom: 14px; display: flex; flex-direction: column; }
+  #agnes-panel .ap-bd .msg.bot { align-items: flex-start; }
+  #agnes-panel .ap-bd .msg.user { align-items: flex-end; }
+  #agnes-panel .ap-bd .msg .b {
+    max-width: 78%; padding: 10px 14px; border-radius: 12px;
+    font-size: 14px; line-height: 1.6; word-break: break-word;
+  }
+  #agnes-panel .ap-bd .msg.bot .b {
+    background: #1D242E; color: #E5EEFF; border: 1px solid #536480;
+    border-bottom-left-radius: 4px;
+  }
+  #agnes-panel .ap-bd .msg.user .b { background: var(--primary,#536480); color: #fff; border-bottom-right-radius: 4px; }
+  #agnes-panel .ap-bd .msg .t { font-size: 11px; color: #536480; margin-top: 4px; padding: 0 4px; }
+  #agnes-panel .ap-ft {
+    display: flex; align-items: stretch; gap: 8px;
+    padding: 10px 14px; border-top: 1px solid #536480; background: #343F51;
+  }
+  #agnes-panel .ap-ft input {
+    flex: 1; border: 1px solid #536480; border-radius: 8px; padding: 0 12px;
+    font-size: 14px; outline: none; background: #1D242E; color: #E5EEFF; height: 38px;
+  }
+  #agnes-panel .ap-ft input:focus { border-color: var(--primary,#536480); }
+  #agnes-panel .ap-ft input::placeholder { color: #536480; }
+  #agnes-panel .ap-ft button {
+    padding: 0 18px; background: var(--primary,#536480); color: #fff; border: none;
+    border-radius: 8px; font-size: 14px; cursor: pointer; white-space: nowrap;
+    height: 38px; display: flex; align-items: center; justify-content: center;
+  }
+  #agnes-panel .ap-ft button:hover { background: var(--primary-hover,#475775); }
+  #agnes-panel .ap-ft button:disabled { opacity: 0.5; cursor: not-allowed; }
+  #agnes-panel .typing { display: flex; gap: 4px; padding: 4px 0; }
+  #agnes-panel .typing span {
+    width: 7px; height: 7px; border-radius: 50%; background: #536480;
+    animation: agnes-bounce 1.2s infinite;
+  }
+  #agnes-panel .typing span:nth-child(2) { animation-delay: 0.2s; }
+  #agnes-panel .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes agnes-bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
+  @media (max-width: 480px) {
+    #agnes-btn { bottom: 90px; right: 16px; width: 46px; height: 46px; font-size: 20px; }
+    #agnes-panel { right: 8px; bottom: 146px; width: calc(100vw - 16px); height: 420px; }
+  }
+  </style>
+</head>
+<body>
+  <!-- 页面加载动画 -->
+  <div class="loader" id="pageLoader"><div class="spinner"></div></div>
+
+  <!-- 顶部通知栏 -->
+  <div class="bar-notice">
+    <div class="wrap">
+      <span class="tag">公告</span>
+      <div class="scroll-box"><div class="scroll-txt">
+        <span>阿晚科技荣获2025年度电商技术服务创新企业称号！</span>
+        <span>全新电商SaaS 3.0版本上线，功能全面升级</span>
+        <span>新客户首单享8折优惠，限时活动中，欢迎咨询！</span>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 固定导航 -->
+  <header class="mhdr" id="mainHeader">
+    <div class="wrap">
+      <div class="logo"><div class="ico"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;"><defs><linearGradient id="lg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E5EEFF"/><stop offset="100%" stop-color="#536480"/></linearGradient></defs><rect width="32" height="32" rx="6" fill="url(#lg)"/><g fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8,24 L16,6 L24,24"/><path d="M11,19 L21,19"/></g><line x1="6" y1="6" x2="26" y2="26" stroke="#fff" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.45"/><circle cx="16" cy="6" r="1.5" fill="#fff"/><circle cx="8" cy="24" r="1.5" fill="#fff"/><circle cx="24" cy="24" r="1.5" fill="#fff"/></svg></div><a href="index.html">阿晚科技</a></div>
+      <ul class="nmenu">
+        <li class="on"><a href="index.html">首页</a></li>
+        <li><a href="pages/about.html">关于我们</a></li>
+        <li class="ndrop">
+          <a href="pages/products.html">产品中心</a>
+          <ul class="dd">
+            <li><a href="pages/products.html">全部产品</a></li>
+            <li><a href="pages/product-detail.html">电商商城SaaS</a></li>
+            <li><a href="pages/product-detail.html">直播带货系统</a></li>
+            <li><a href="pages/product-detail.html">私域小程序</a></li>
+            <li><a href="pages/product-detail.html">仓储管理系统</a></li>
+          </ul>
+        </li>
+        <li class="ndrop">
+          <a href="pages/cases.html">工程案例</a>
+          <ul class="dd">
+            <li><a href="pages/cases.html">全部案例</a></li>
+            <li><a href="pages/case-detail.html">线下实体商家</a></li>
+            <li><a href="pages/case-detail.html">线上品牌店铺</a></li>
+            <li><a href="pages/case-detail.html">直播电商项目</a></li>
+          </ul>
+        </li>
+        <li class="ndrop">
+          <a href="pages/news.html">新闻资讯</a>
+          <ul class="dd">
+            <li><a href="pages/news.html">企业动态</a></li>
+            <li><a href="pages/news.html">电商行业干货</a></li>
+            <li><a href="pages/news.html">运营技巧</a></li>
+          </ul>
+        </li>
+        <li><a href="pages/qualifications.html">资质荣誉</a></li>
+        <li><a href="pages/contact.html">联系我们</a></li>
+      </ul>
+      <div class="htools">
+        <button id="btnSearch" title="搜索">&#128269;</button>
+        <button id="themeToggle" title="切换主题"><span id="theme-icon">&#9790;</span></button>
+        <button class="ham" id="hamburgerBtn" title="菜单"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 移动端导航 -->
+  <div class="mnav-o" id="mobileNavOverlay"></div>
+  <div class="mnav" id="mobileNavPanel">
+    <div class="mnav-hd"><div class="logo"><div class="ico"><svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;"><defs><linearGradient id="lg2" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E5EEFF"/><stop offset="100%" stop-color="#536480"/></linearGradient></defs><rect width="28" height="28" rx="5" fill="url(#lg2)"/><g fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7,21 L14,5 L21,21"/><path d="M9.5,17 L18.5,17"/></g><line x1="5" y1="5" x2="23" y2="23" stroke="#fff" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.4"/><circle cx="14" cy="5" r="1.3" fill="#fff"/><circle cx="7" cy="21" r="1.3" fill="#fff"/><circle cx="21" cy="21" r="1.3" fill="#fff"/></svg></div>阿晚科技</div><button class="mnav-cl" id="mobileNavClose">&#10005;</button></div>
+    <ul class="mnav-l">
+      <li class="on"><a href="index.html">首页</a></li>
+      <li><a href="pages/about.html">关于我们</a></li>
+      <li><div class="mstog"><a href="pages/products.html">产品中心</a><span class="arr">&#9660;</span></div><ul class="msub"><li><a href="pages/products.html">全部产品</a></li><li><a href="pages/product-detail.html">电商商城SaaS</a></li><li><a href="pages/product-detail.html">直播带货系统</a></li><li><a href="pages/product-detail.html">私域小程序</a></li><li><a href="pages/product-detail.html">仓储管理系统</a></li></ul></li>
+      <li><div class="mstog"><a href="pages/cases.html">工程案例</a><span class="arr">&#9660;</span></div><ul class="msub"><li><a href="pages/cases.html">全部案例</a></li><li><a href="pages/case-detail.html">线下实体商家</a></li><li><a href="pages/case-detail.html">线上品牌店铺</a></li><li><a href="pages/case-detail.html">直播电商项目</a></li></ul></li>
+      <li><div class="mstog"><a href="pages/news.html">新闻资讯</a><span class="arr">&#9660;</span></div><ul class="msub"><li><a href="pages/news.html">企业动态</a></li><li><a href="pages/news.html">电商行业干货</a></li><li><a href="pages/news.html">运营技巧</a></li></ul></li>
+      <li><a href="pages/qualifications.html">资质荣誉</a></li>
+      <li><a href="pages/contact.html">联系我们</a></li>
+    </ul>
+  </div>
+
+  <!-- Hero轮播 -->
+  <section class="hero">
+    <div class="hs on" style="--bg: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80'); --ov: 0.85;">
+<div class="hs-bg"><svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff" stop-opacity="0.06"/><stop offset="100%" stop-color="#fff" stop-opacity="0.03"/></linearGradient></defs><style>.i1{stroke:rgba(255,255,255,0.4);stroke-width:1.5;fill:none;}.i2{stroke:rgba(255,255,255,0.3);stroke-width:1.5;fill:url(#g1);}.i3{stroke:rgba(255,255,255,0.2);stroke-width:1;fill:none;stroke-dasharray:4 5;}.i4{fill:rgba(255,255,255,0.25);opacity:1;}</style><rect width="800" height="500" fill="url(#ga)"/><pattern id="ga" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.12)"/></pattern><g transform="translate(460,320) matrix(0.866,0.5,-0.866,0.5,0,0)"><rect x="-100" y="-60" width="200" height="120" class="i2"/><rect x="-80" y="40" width="60" height="40" class="i2"/><rect x="-30" y="20" width="50" height="60" class="i2"/><rect x="40" y="-10" width="40" height="50" class="i2"/><rect x="-80" y="-100" width="40" height="40" class="i2"/><rect x="-20" y="-80" width="30" height="80" class="i2"/><rect x="30" y="-110" width="30" height="70" class="i2"/><rect x="-70" y="10" width="12" height="12" class="i1"/><rect x="-30" y="-10" width="10" height="10" class="i1"/><rect x="42" y="-30" width="8" height="8" class="i1"/></g><path d="M330,200 l173,100 -173,100 -173,-100 z" class="i1" opacity="0.5"/><path d="M460,203 l-86.6,-50" class="i3"/><path d="M460,303 l86.6,-50" class="i3"/><path d="M300,250 l-30,-20" class="i3"/><path d="M500,250 l30,-20" class="i3"/><circle cx="300" cy="248" r="3" class="i4"/><circle cx="500" cy="248" r="3" class="i4"/><circle cx="373" cy="203" r="3" class="i4"/><circle cx="547" cy="253" r="3" class="i4"/><rect x="50" y="80" width="60" height="40" rx="4" class="i2" opacity="0.4"/><rect x="680" y="60" width="50" height="35" rx="4" class="i2" opacity="0.4"/><rect x="60" y="350" width="40" height="30" class="i2" opacity="0.3"/><rect x="690" y="340" width="45" height="28" class="i2" opacity="0.3"/></svg></div>
+<div class="hs-ov"><div class="wrap"><div class="hs-c fi"><div class="hs-sub">AWAN TECHNOLOGY</div><h1>阿晚科技 — 一站式全链路电商技术服务商</h1><p>深耕电商数字化，为中小商家提供建站、运营、系统开发全方案，让每一笔交易更简单。</p><div class="hs-btns"><a href="pages/products.html" class="btn btn-pri wpri">了解产品</a><a href="pages/contact.html" class="btn btn-sec wsec">立即咨询</a></div></div></div></div></div>
+    <div class="hs" style="--bg: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1920&q=80'); --ov: 0.83;">
+<div class="hs-bg"><svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff" stop-opacity="0.06"/><stop offset="100%" stop-color="#fff" stop-opacity="0.03"/></linearGradient></defs><style>.i1{stroke:rgba(255,255,255,0.4);stroke-width:1.5;fill:none;}.i2{stroke:rgba(255,255,255,0.3);stroke-width:1.5;fill:url(#g2);}.i3{stroke:rgba(255,255,255,0.2);stroke-width:1;fill:none;stroke-dasharray:4 5;}.i4{fill:rgba(255,255,255,0.25);opacity:1;}</style><rect width="800" height="500" fill="url(#gb)"/><pattern id="gb" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.12)"/></pattern><g transform="translate(440,310) matrix(0.866,0.5,-0.866,0.5,0,0)"><rect x="-90" y="-50" width="180" height="100" class="i2"/><rect x="-70" y="-90" width="35" height="50" class="i2"/><rect x="-15" y="-80" width="45" height="40" class="i2"/><rect x="40" y="-100" width="30" height="60" class="i2"/><rect x="-60" y="30" width="120" height="20" class="i2"/><rect x="-70" y="-40" width="12" height="12" class="i1"/><rect x="-10" y="-30" width="10" height="10" class="i1"/><rect x="42" y="-20" width="8" height="8" class="i1"/></g><path d="M320,210 l173,100 -173,100 -173,-100 z" class="i1" opacity="0.4"/><path d="M440,310 l-86.6,-50" class="i3"/><path d="M440,310 l86.6,-50" class="i3"/><circle cx="353" cy="260" r="3" class="i4"/><circle cx="527" cy="260" r="3" class="i4"/><circle cx="440" cy="190" r="3" class="i4"/><rect x="80" y="100" width="55" height="35" rx="3" class="i2" opacity="0.35"/><rect x="660" y="80" width="45" height="30" rx="3" class="i2" opacity="0.35"/><rect x="100" y="340" width="35" height="25" class="i2" opacity="0.3"/><rect x="670" y="350" width="40" height="25" class="i2" opacity="0.3"/></svg></div>
+<div class="hs-ov"><div class="wrap"><div class="hs-c fi"><div class="hs-sub">SAAS PLATFORM</div><h1>电商商城SaaS系统</h1><p>开箱即用的电商SaaS解决方案，支持多店铺、多规格、多支付方式，助力商家快速上线。</p><div class="hs-btns"><a href="pages/products.html" class="btn btn-pri wpri">探索产品</a><a href="pages/cases.html" class="btn btn-sec wsec">查看案例</a></div></div></div></div></div>
+    <div class="hs" style="--bg: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1920&q=80'); --ov: 0.88;">
+<div class="hs-bg"><svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff" stop-opacity="0.06"/><stop offset="100%" stop-color="#fff" stop-opacity="0.03"/></linearGradient></defs><style>.i1{stroke:rgba(255,255,255,0.4);stroke-width:1.5;fill:none;}.i2{stroke:rgba(255,255,255,0.3);stroke-width:1.5;fill:url(#g3);}.i3{stroke:rgba(255,255,255,0.2);stroke-width:1;fill:none;stroke-dasharray:4 5;}.i4{fill:rgba(255,255,255,0.25);opacity:1;}</style><rect width="800" height="500" fill="url(#gc)"/><pattern id="gc" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.12)"/></pattern><g transform="translate(450,310) matrix(0.866,0.5,-0.866,0.5,0,0)"><rect x="-90" y="-60" width="180" height="110" class="i2"/><rect x="-65" y="-95" width="40" height="35" class="i2"/><rect x="15" y="-85" width="40" height="25" class="i2"/><rect x="-40" y="30" width="80" height="20" class="i2"/><rect x="-55" y="-45" width="10" height="10" class="i1"/><rect x="10" y="-35" width="8" height="8" class="i1"/><rect x="-10" y="15" width="60" height="14" class="i2"/></g><path d="M330,200 l173,100 -173,100 -173,-100 z" class="i1" opacity="0.4"/><path d="M450,200 l-86.6,-50" class="i3"/><path d="M450,300 l86.6,-50" class="i3"/><circle cx="363" cy="250" r="3" class="i4"/><circle cx="537" cy="250" r="3" class="i4"/><circle cx="450" cy="190" r="3" class="i4"/><rect x="60" y="90" width="50" height="32" rx="3" class="i2" opacity="0.35"/><rect x="680" y="70" width="42" height="28" rx="3" class="i2" opacity="0.35"/><rect x="80" y="340" width="38" height="26" class="i2" opacity="0.3"/><rect x="680" y="345" width="36" height="24" class="i2" opacity="0.3"/></svg></div>
+<div class="hs-ov"><div class="wrap"><div class="hs-c fi"><div class="hs-sub">LIVE COMMERCE</div><h1>直播带货 · 私域小程序</h1><p>打通公域流量与私域运营，直播带货系统+小程序商城，构建完整电商闭环。</p><div class="hs-btns"><a href="pages/products.html" class="btn btn-pri wpri">了解详情</a><a href="pages/contact.html" class="btn btn-sec wsec">免费咨询</a></div></div></div></div></div>
+    <button class="sa p" id="sliderPrev">&#10094;</button>
+    <button class="sa n" id="sliderNext">&#10095;</button>
+    <div class="si"><span class="sd on" data-index="0"></span><span class="sd" data-index="1"></span><span class="sd" data-index="2"></span></div>
+  </section>
+
+  <!-- 数据统计 -->
+  <section class="stats"><div class="wrap"><div class="g4">
+    <div class="si2 fi"><div><span class="cnt" data-target="36000" data-duration="2500">0</span><span style="font-size:1rem;font-weight:700">+</span></div><div class="cnt-label">服务企业客户</div></div>
+    <div class="si2 fi"><div><span class="cnt" data-target="500" data-duration="2000">0</span><span style="font-size:1rem;font-weight:700">+</span></div><div class="cnt-label">落地项目案例</div></div>
+    <div class="si2 fi"><div><span class="cnt" data-target="15" data-duration="1500">0</span><span style="font-size:1rem;font-weight:700">年</span></div><div class="cnt-label">电商深耕经验</div></div>
+    <div class="si2 fi"><div><span class="cnt" data-target="30" data-duration="1500">0</span><span style="font-size:1rem;font-weight:700">+</span></div><div class="cnt-label">覆盖地区</div></div>
+  </div></div></section>
+
+  <!-- 关于我们 -->
+  <section class="sec"><div class="wrap"><div class="sec-title fi"><h2>关于阿晚科技</h2><p>深耕电商数字化，以技术创新驱动商业增长</p></div>
+    <div class="abt-grid">
+      <div class="abt-img fil"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop" alt="团队协作"></div>
+      <div class="abt-txt fir"><h3>电商技术服务领域的先行者</h3>
+        <p>阿晚科技成立于2010年，是一家专注于综合电商技术服务领域的科技企业。我们为企业提供电商商城SaaS系统、直播带货系统、私域小程序、仓储管理系统等全链路电商解决方案。</p>
+        <p>多年来，我们已累计服务超过36,000家电商企业客户，涵盖线下实体零售、线上品牌店铺、直播电商等多个业态。凭借领先的技术实力和深度的行业理解，赢得了客户的广泛信赖。</p>
+        <div class="abt-feat">
+          <div class="fi2"><span class="ck">&#10003;</span> 15年电商经验</div>
+          <div class="fi2"><span class="ck">&#10003;</span> 300+技术团队</div>
+          <div class="fi2"><span class="ck">&#10003;</span> ISO9001认证</div>
+          <div class="fi2"><span class="ck">&#10003;</span> 7x24小时服务</div>
+          <div class="fi2"><span class="ck">&#10003;</span> 500+电商案例</div>
+          <div class="fi2"><span class="ck">&#10003;</span> 全链路解决方案</div>
+        </div>
+        <div style="margin-top:18px"><a href="pages/about.html" class="btn btn-pri">了解更多</a></div>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- 产品展示 -->
+  <section class="sec sec-alt"><div class="wrap"><div class="sec-title fi"><h2>核心产品</h2><p>全链路电商技术服务，覆盖商家经营全场景</p></div>
+    <div class="ptabs fi">
+      <button class="ptab on" data-filter="all">全部</button>
+      <button class="ptab" data-filter="saas">电商商城SaaS</button>
+      <button class="ptab" data-filter="live">直播带货</button>
+      <button class="ptab" data-filter="mini">私域小程序</button>
+      <button class="ptab" data-filter="wms">仓储管理</button>
+    </div>
+    <div class="g3">
+      <div class="pcd hl fi" data-cat="saas">
+        <div class="pcd-i izoom"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=250&fit=crop" alt="电商商城SaaS"><span class="pcd-badge">热销</span></div>
+        <div class="pcd-b"><h3>电商商城SaaS系统</h3><p>开箱即用的电商SaaS平台，支持多店铺、多规格、多支付方式，助力商家快速上线。</p>
+          <ul class="pcd-feat"><li>多店铺管理</li><li>全渠道营销</li><li>数据分析看板</li></ul>
+          <div class="pcd-tags"><span>B2C</span><span>B2B</span><span>O2O</span></div>
+          <a href="pages/product-detail.html" class="btn btn-sec btn-sm" style="width:100%;margin-top:12px;">查看详情</a>
+        </div>
+      </div>
+      <div class="pcd hl fi" data-cat="live">
+        <div class="pcd-i izoom"><img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=250&fit=crop" alt="直播带货"><span class="pcd-badge">新品</span></div>
+        <div class="pcd-b"><h3>直播带货系统</h3><p>一站式直播带货解决方案，支持多平台推流、实时互动、在线成交，引爆销售增长。</p>
+          <ul class="pcd-feat"><li>多平台同步直播</li><li>实时互动营销</li><li>智能数据追踪</li></ul>
+          <div class="pcd-tags"><span>抖音</span><span>快手</span><span>淘宝</span></div>
+          <a href="pages/product-detail.html" class="btn btn-sec btn-sm" style="width:100%;margin-top:12px;">查看详情</a>
+        </div>
+      </div>
+      <div class="pcd hl fi" data-cat="mini">
+        <div class="pcd-i izoom"><img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=250&fit=crop" alt="私域小程序"></div>
+        <div class="pcd-b"><h3>私域小程序商城</h3><p>微信/抖音/支付宝多平台小程序商城，构建私域流量池，实现复购增长。</p>
+          <ul class="pcd-feat"><li>多平台适配</li><li>会员体系</li><li>社交裂变</li></ul>
+          <div class="pcd-tags"><span>微信</span><span>抖音</span><span>支付宝</span></div>
+          <a href="pages/product-detail.html" class="btn btn-sec btn-sm" style="width:100%;margin-top:12px;">查看详情</a>
+        </div>
+      </div>
+      <div class="pcd hl fi" data-cat="wms">
+        <div class="pcd-i izoom"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=250&fit=crop" alt="仓储管理"></div>
+        <div class="pcd-b"><h3>仓储管理系统(WMS)</h3><p>智能仓储管理方案，库存实时同步、智能分拣、物流追踪，降低运营成本。</p>
+          <ul class="pcd-feat"><li>库存实时监控</li><li>智能分拣调度</li><li>物流全程追踪</li></ul>
+          <div class="pcd-tags"><span>ERP</span><span>IoT</span></div>
+          <a href="pages/product-detail.html" class="btn btn-sec btn-sm" style="width:100%;margin-top:12px;">查看详情</a>
+        </div>
+      </div>
+      <div class="pcd hl fi" data-cat="saas">
+        <div class="pcd-i izoom"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop" alt="CRM"></div>
+        <div class="pcd-b"><h3>电商CRM客户管理</h3><p>全渠道客户数据打通，精准画像分析，自动化营销触达，提升客户生命周期价值。</p>
+          <ul class="pcd-feat"><li>客户画像分析</li><li>自动化营销</li><li>智能推荐引擎</li></ul>
+          <div class="pcd-tags"><span>数据分析</span><span>AI</span></div>
+          <a href="pages/product-detail.html" class="btn btn-sec btn-sm" style="width:100%;margin-top:12px;">查看详情</a>
+        </div>
+      </div>
+      <div class="pcd hl fi" data-cat="live">
+        <div class="pcd-i izoom"><img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?w=400&h=250&fit=crop" alt="营销工具"></div>
+        <div class="pcd-b"><h3>电商营销工具箱</h3><p>优惠券、拼团、秒杀、分销等丰富营销玩法，助力商家高效获客与转化。</p>
+          <ul class="pcd-feat"><li>多种营销玩法</li><li>数据效果追踪</li><li>一键配置上线</li></ul>
+          <div class="pcd-tags"><span>拼团</span><span>秒杀</span><span>分销</span></div>
+          <a href="pages/product-detail.html" class="btn btn-sec btn-sm" style="width:100%;margin-top:12px;">查看详情</a>
+        </div>
+      </div>
+    </div>
+    <div class="nc-more" style="text-align:center;margin-top:32px"><a href="pages/products.html" class="btn btn-pri">查看全部产品</a></div>
+  </div></section>
+
+  <!-- 案例展示 -->
+  <section class="sec"><div class="wrap"><div class="sec-title fi"><h2>精选案例</h2><p>覆盖线下实体、线上品牌、直播电商全业态</p></div>
+    <div class="g3">
+      <a href="pages/case-detail.html" class="cs-card fi"><img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?w=500&h=350&fit=crop" alt="线下实体"><div class="cs-card-ov"><span class="tag">线下实体</span><h3>优品生活连锁超市电商化改造</h3><p>为500+线下门店搭建线上商城，线上线下融合运营</p>
+          <div class="cs-card-data"><div class="di"><div class="dn" style="color:var(--accent);font-weight:700">+180%</div><div class="dl" style="font-size:0.7rem;opacity:0.8">营收增长</div></div><div class="di"><div class="dn" style="color:var(--accent);font-weight:700">500+</div><div class="dl" style="font-size:0.7rem;opacity:0.8">门店覆盖</div></div></div>
+        </div></a>
+      <a href="pages/case-detail.html" class="cs-card fi"><img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=500&h=350&fit=crop" alt="线上品牌"><div class="cs-card-ov"><span class="tag">线上品牌</span><h3>潮牌服饰品牌天猫旗舰店搭建</h3><p>从0到1打造品牌电商体系，全渠道营销布局</p>
+          <div class="cs-card-data"><div class="di"><div class="dn" style="color:var(--accent);font-weight:700">+320%</div><div class="dl" style="font-size:0.7rem;opacity:0.8">GMV增长</div></div><div class="di"><div class="dn" style="color:var(--accent);font-weight:700">50万+</div><div class="dl" style="font-size:0.7rem;opacity:0.8">月活用户</div></div></div>
+        </div></a>
+      <a href="pages/case-detail.html" class="cs-card fi"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=350&fit=crop" alt="直播电商"><div class="cs-card-ov"><span class="tag">直播电商</span><h3>农产品直播电商全案项目</h3><p>抖音+快手双平台直播体系，助农增收数字化方案</p>
+          <div class="cs-card-data"><div class="di"><div class="dn" style="color:var(--accent);font-weight:700">+500万</div><div class="dl" style="font-size:0.7rem;opacity:0.8">单场GMV</div></div><div class="di"><div class="dn" style="color:var(--accent);font-weight:700">100万+</div><div class="dl" style="font-size:0.7rem;opacity:0.8">观看人次</div></div></div>
+        </div></a>
+    </div>
+    <div class="nc-more" style="text-align:center;margin-top:32px"><a href="pages/cases.html" class="btn btn-sec">查看更多案例</a></div>
+  </div></section>
+
+  <!-- 资质荣誉 -->
+  <section class="sec sec-alt"><div class="wrap"><div class="sec-title fi"><h2>资质荣誉</h2><p>权威认证，技术实力的最好证明</p></div>
+    <div class="cp-grid">
+      <div class="cp-i fi"><div class="ic">&#127942;</div><h4>国家高新技术企业</h4><p>2023年认定</p></div>
+      <div class="cp-i fi"><div class="ic">&#128220;</div><h4>软件著作权50+</h4><p>核心技术自主可控</p></div>
+      <div class="cp-i fi"><div class="ic">&#9889;</div><h4>ISO9001认证</h4><p>质量管理体系</p></div>
+      <div class="cp-i fi"><div class="ic">&#127776;</div><h4>电商协会理事单位</h4><p>行业领军企业</p></div>
+      <div class="cp-i fi"><div class="ic">&#127943;</div><h4>技术创新大奖</h4><p>2025年度获奖</p></div>
+    </div>
+    <div style="text-align:center;margin-top:24px"><a href="pages/qualifications.html" class="btn btn-sec">查看全部资质</a></div>
+  </div></section>
+
+  <!-- 新闻资讯 -->
+  <section class="sec"><div class="wrap"><div class="sec-title fi"><h2>行业资讯</h2><p>电商前沿动态与运营干货</p></div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <a href="pages/news-detail.html" class="nc fi"><div class="nc-i izoom"><img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=300&h=200&fit=crop" alt="企业动态"></div><div class="nc-b"><div class="nc-d">&#128197; 2025-12-15</div><h3>阿晚科技荣获2025年度电商技术服务创新企业</h3><p>在第十二届中国电商技术创新大会上，阿晚科技凭借领先的SaaS产品和优质的服务表现，荣获年度最佳电商技术服务商...</p></div></a>
+      <a href="pages/news-detail.html" class="nc fi"><div class="nc-i izoom"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=300&h=200&fit=crop" alt="行业干货"></div><div class="nc-b"><div class="nc-d">&#128197; 2025-11-28</div><h3>2026年电商行业发展趋势深度解读</h3><p>AI+电商深度融合、直播电商持续爆发、私域运营精细化，本文从多个维度解析未来一年电商行业趋势...</p></div></a>
+      <a href="pages/news-detail.html" class="nc fi"><div class="nc-i izoom"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=300&h=200&fit=crop" alt="运营技巧"></div><div class="nc-b"><div class="nc-d">&#128197; 2025-11-10</div><h3>中小商家如何做私域流量运营？实战攻略来了</h3><p>私域流量已成为中小商家低成本获客的关键阵地。本文分享经过验证的私域运营方法论和实操技巧...</p></div></a>
+    </div>
+    <div class="nc-more" style="text-align:center;margin-top:32px"><a href="pages/news.html" class="btn btn-sec">查看更多资讯</a></div>
+  </div></section>
+
+  <!-- CTA -->
+  <section class="cta"><div class="wrap"><h2 class="fi">准备好开启电商数字化转型了吗？</h2><p class="fi">立即联系我们，获取免费的电商技术方案与报价</p><a href="pages/contact.html" class="bac fi">立即咨询</a></div></section>
+
+  <!-- 页脚 -->
+  <footer class="ft"><div class="wrap"><div class="ft-grid">
+    <div><h4>阿晚科技</h4><p style="font-size:0.85rem;line-height:1.8;margin-bottom:10px">专注电商技术服务领域，以技术创新驱动商业增长。我们的使命是帮助每一位电商商家在数字化时代取得成功。</p>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <a href="#" style="display:inline-flex;width:32px;height:32px;background:var(--bg-alt);border-radius:50%;align-items:center;justify-content:center;color:var(--text-secondary);transition:all var(--transition)" title="微信">&#128247;</a>
+        <a href="#" style="display:inline-flex;width:32px;height:32px;background:var(--bg-alt);border-radius:50%;align-items:center;justify-content:center;color:var(--text-secondary);transition:all var(--transition)" title="微博">&#128038;</a>
+        <a href="#" style="display:inline-flex;width:32px;height:32px;background:var(--bg-alt);border-radius:50%;align-items:center;justify-content:center;color:var(--text-secondary);transition:all var(--transition)" title="抖音">&#127916;</a>
+      </div>
+    </div>
+    <div><h4>关于我们</h4><a href="pages/about.html">公司简介</a><a href="pages/about.html">企业文化</a><a href="pages/about.html">发展历程</a><a href="pages/about.html">团队介绍</a><a href="pages/qualifications.html">资质荣誉</a></div>
+    <div><h4>产品中心</h4><a href="pages/products.html">电商商城SaaS</a><a href="pages/products.html">直播带货系统</a><a href="pages/products.html">私域小程序</a><a href="pages/products.html">仓储管理系统</a><a href="pages/products.html">营销工具箱</a></div>
+    <div><h4>新闻资讯</h4><a href="pages/news.html">企业动态</a><a href="pages/news.html">电商干货</a><a href="pages/news.html">运营技巧</a><a href="pages/news.html">媒体报道</a></div>
+    <div><h4>联系方式</h4><p>6666-6666-6666</p><p>158964224@qq.com</p><p>安徽省人民政府</p><p>周一至周五 9:00-18:00</p></div>
+  </div>
+  <div class="ft-copy">&copy; 阿晚科技 版权所有 | 电商技术服务服务商 | <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备XXXXXXXX号-1</a> | <a href="config.html">站点配置</a></div>
+  </div></footer>
+
+  <!-- 侧边导航 -->
+  <div class="snav"><a href="index.html" title="首页">&#8962;</a><a href="pages/about.html" title="关于我们">&#9733;</a><a href="pages/products.html" title="产品中心">&#9730;</a><a href="pages/cases.html" title="工程案例">&#127942;</a><a href="pages/contact.html" title="联系我们">&#9993;</a></div>
+
+  <!-- 搜索弹窗 -->
+  <div class="srch-o" id="searchOverlay"><div class="srch-b"><input type="text" placeholder="输入关键词搜索..." id="searchInput"><p>按 Enter 键搜索，或按 ESC 关闭</p><button class="mnav-cl" style="position:absolute;top:10px;right:14px" id="searchClose">&#10005;</button></div></div>
+
+  <!-- 客服弹窗 -->
+  <div class="cp-o" id="chatPopupOverlay"><div class="cp"><div class="cp-hd"><h3>在线客服</h3><button class="cp-cl" id="chatPopupClose">&#10005;</button></div><div class="cp-bd"><p>请选择您偏好的联系方式</p><div class="cp-m">
+      <div class="cp-mi" data-channel="wechat"><span class="ic">&#128247;</span><span>微信咨询</span></div>
+      <div class="cp-mi" data-channel="phone"><span class="ic">&#128222;</span><span>电话咨询</span></div>
+      <div class="cp-mi" data-channel="form"><span class="ic">&#9993;</span><span>表单留言</span></div>
+    </div></div></div></div>
+
+  <button class="fchat" id="floatingChatBtn" title="在线咨询">&#128172;</button>
+  <button class="btt" id="backToTop" title="返回顶部">&#9650;</button>
+
+  <script src="js/main.js"></script>
+  <script src="js/slider.js"></script>
+  <script src="js/form-validate.js"></script>
+  <script src="js/product-filter.js"></script>
+<!-- ====== 阿晚AI助手：HTML结构（新增） ====== -->
+<div id="agnes-panel">
+  <div class="ap-hd">
+    <h3>阿晚AI助手</h3>
+    <button class="ap-cl" id="agnesClose">&#10005;</button>
+  </div>
+  <div class="ap-bd" id="agnesMessages"></div>
+  <div class="ap-ft">
+    <input type="text" id="agnesInput" placeholder="输入您的问题..." autocomplete="off">
+    <button id="agnesSend">发送</button>
+  </div>
+</div>
+<button id="agnes-btn" title="打开AI助手">&#129302;</button>
+
+<!-- ====== 阿晚AI助手：JS对话交互 + 拖拽逻辑（新增/重构） ====== -->
+<script>
+(function() {
+  // ================================================================
+  //  配置区 —— 对接 Agnes 接口时填写以下参数
+  // ================================================================
+  var API = {
+    url: '',    // Agnes 接口地址，例: 'https://api.agnes.ai/chat'
+    key: ''     // 接口鉴权密钥（如不需要留空）
+  };
+
+  var WELCOME_MSG = '您好，我是阿晚AI助手，专注解答建站、电商系统开发、运营方案相关问题，有任何需求都可以向我提问。';
+
+  // ================================================================
+  //  系统提示词 —— 每次请求携带，Agnes 模型据此自主区分各类问题
+  //  公司业务信息、回答规则全部封装在此，前端不拦截不判断
+  // ================================================================
+  var SYSTEM_PROMPT = '你是阿晚 AI 助手，阿晚科技专属线上客服，语气亲和自然，像企业员工一样和客户正常聊天。公司基础信息：阿晚科技是一站式电商数字化技术服务商，深耕电商 15 年，提供企业建站、电商系统定制、商家运营全方案，服务 36000 + 企业，落地 500 + 项目；客服热线 6666-6666-6666，咨询渠道是网站顶部导航【联系我们】留言。回答规则：1、客户闲聊、生活提问、通用电商技术问题，正常自由作答，不要主动推送电话、留言入口；2、客户主动询问公司业务、联系方式、报价、项目案例时，回答里顺带告知对应咨询渠道；3、回答流畅口语化，禁止生硬模板话术，完整承接客户对话内容。';
+
+  // ================================================================
+  //  DOM 引用 & 状态变量
+  // ================================================================
+  var panel = document.getElementById('agnes-panel');
+  var btn = document.getElementById('agnes-btn');
+  var messagesEl = document.getElementById('agnesMessages');
+  var inputEl = document.getElementById('agnesInput');
+  var sendBtn = document.getElementById('agnesSend');
+  var closeBtn = document.getElementById('agnesClose');
+  var conversation = [];      // 对话历史 [{role, content}]，每次请求传给 Agnes
+  var isSending = false;      // 发送锁，防重复提交
+
+  // ================================================================
+  //  ① renderMessage() —— 统一消息渲染函数
+  //     用户蓝色右气泡 / AI白色左气泡 / 加载/异常提示 + 时间戳
+  // ================================================================
+  function renderMessage(text, role) {
+    if (role === 'typing') {
+      var div = document.createElement('div');
+      div.className = 'msg bot';
+      div.id = 'agnesTyping';
+      div.innerHTML = '<div class="b"><div class="typing"><span></span><span></span><span></span></div><div style="font-size:12px;color:#94a3b8;margin-top:6px;">AI正在思考中...</div></div>';
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return;
+    }
+    if (role === 'remove-typing') {
+      var el = document.getElementById('agnesTyping');
+      if (el) el.remove();
+      return;
+    }
+    var div = document.createElement('div');
+    div.className = 'msg ' + (role || 'bot');
+    var bubble = document.createElement('div');
+    bubble.className = 'b';
+    bubble.textContent = text;
+    div.appendChild(bubble);
+    var time = document.createElement('div');
+    time.className = 't';
+    time.textContent = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+    div.appendChild(time);
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  // ================================================================
+  //  ② fetchAgnesModel() —— Agnes API 异步请求函数
+  //     携带系统提示词 + 完整对话上下文，fetch 请求
+  //     防重复：isSending 锁定期间忽略新请求
+  // ================================================================
+  function fetchAgnesModel(userText) {
+    if (isSending) return;
+    isSending = true;
+    sendBtn.disabled = true;
+    inputEl.disabled = true;
+    renderMessage(null, 'typing');
+
+    var messages = [{ role: 'system', content: SYSTEM_PROMPT }];
+    for (var i = 0; i < conversation.length; i++) {
+      messages.push(conversation[i]);
+    }
+    messages.push({ role: 'user', content: userText });
+
+    var headers = { 'Content-Type': 'application/json' };
+    if (API.key) { headers['Authorization'] = 'Bearer ' + API.key; }
+
+    fetch(API.url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ messages: messages })
+    })
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      renderMessage(null, 'remove-typing');
+      var reply = data.reply || data.message || data.response || data.text || data.content || '';
+      if (reply) {
+        conversation.push({ role: 'user', content: userText });
+        conversation.push({ role: 'assistant', content: reply });
+        renderMessage(reply, 'bot');
+      } else {
+        renderMessage('当前AI咨询通道繁忙，你可以前往顶部导航【联系我们】提交留言，人工客服会尽快回复你。', 'bot');
+      }
+    })
+    .catch(function() {
+      renderMessage(null, 'remove-typing');
+      renderMessage('当前AI咨询通道繁忙，你可以前往顶部导航【联系我们】提交留言，人工客服会尽快回复你。', 'bot');
+    })
+    .finally(function() {
+      isSending = false;
+      sendBtn.disabled = false;
+      inputEl.disabled = false;
+    });
+  }
+
+  // ================================================================
+  //  ③ sendChat() —— 发送消息入口
+  //     所有用户消息100%转发 Agnes，不做本地拦截判断
+  // ================================================================
+  function sendChat() {
+    var text = inputEl.value.trim();
+    if (!text || isSending) return;
+    renderMessage(text, 'user');
+    inputEl.value = '';
+
+    if (API.url) {
+      fetchAgnesModel(text);
+    } else {
+      renderMessage('您好！我是阿晚AI助手。如需咨询产品与服务，请前往顶部导航【联系我们】提交留言，或直接拨打客服热线 6666-6666-6666。', 'bot');
+    }
+  }
+
+  sendBtn.addEventListener('click', sendChat);
+  inputEl.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') sendChat();
+  });
+  closeBtn.addEventListener('click', function() {
+    panel.classList.remove('on');
+  });
+
+  // ================================================================
+  //  拖拽逻辑（保留原有功能，转载到 HTML 内联）
+  // ================================================================
+  (function initDrag() {
+    var isDragging = false;
+    var startX, startY, originLeft, originTop;
+    var threshold = 6;
+
+    function onMouseDown(e) {
+      var rect = btn.getBoundingClientRect();
+      startX = e.clientX; startY = e.clientY;
+      originLeft = rect.left; originTop = rect.top;
+      btn.classList.add('dragging');
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+      e.preventDefault();
+    }
+
+    function onMouseMove(e) {
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      if (Math.abs(dx) > threshold || Math.abs(dy) > threshold) isDragging = true;
+      if (!isDragging) return;
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var bw = btn.offsetWidth, bh = btn.offsetHeight;
+      var newLeft = Math.max(0, Math.min(vw - bw, originLeft + dx));
+      var newTop = Math.max(0, Math.min(vh - bh, originTop + dy));
+      btn.style.left = newLeft + 'px'; btn.style.top = newTop + 'px';
+      btn.style.right = 'auto'; btn.style.bottom = 'auto';
+    }
+
+    function onMouseUp() {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      btn.classList.remove('dragging');
+      if (!isDragging) {
+        panel.classList.toggle('on');
+        if (panel.classList.contains('on')) setTimeout(function() { inputEl.focus(); }, 100);
+      }
+      isDragging = false;
+    }
+
+    function onTouchStart(e) {
+      var touch = e.touches[0];
+      var rect = btn.getBoundingClientRect();
+      startX = touch.clientX; startY = touch.clientY;
+      originLeft = rect.left; originTop = rect.top;
+      btn.classList.add('dragging');
+      document.addEventListener('touchmove', onTouchMove, { passive: false });
+      document.addEventListener('touchend', onTouchEnd);
+    }
+
+    function onTouchMove(e) {
+      e.preventDefault();
+      var touch = e.touches[0];
+      var dx = touch.clientX - startX, dy = touch.clientY - startY;
+      if (Math.abs(dx) > threshold || Math.abs(dy) > threshold) isDragging = true;
+      if (!isDragging) return;
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var bw = btn.offsetWidth, bh = btn.offsetHeight;
+      var newLeft = Math.max(0, Math.min(vw - bw, originLeft + dx));
+      var newTop = Math.max(0, Math.min(vh - bh, originTop + dy));
+      btn.style.left = newLeft + 'px'; btn.style.top = newTop + 'px';
+      btn.style.right = 'auto'; btn.style.bottom = 'auto';
+    }
+
+    function onTouchEnd() {
+      document.removeEventListener('touchmove', onTouchMove);
+      document.removeEventListener('touchend', onTouchEnd);
+      btn.classList.remove('dragging');
+      if (!isDragging) {
+        panel.classList.toggle('on');
+        if (panel.classList.contains('on')) setTimeout(function() { inputEl.focus(); }, 100);
+      }
+      isDragging = false;
+    }
+
+    btn.addEventListener('mousedown', onMouseDown);
+    btn.addEventListener('touchstart', onTouchStart, { passive: true });
+  })();
+
+  // ================================================================
+  //  初始欢迎语
+  // ================================================================
+  renderMessage(WELCOME_MSG, 'bot');
+  console.log('阿晚AI助手已加载');
+})();
+</script>
+</body>
+</html>
