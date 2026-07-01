@@ -5,3 +5,4 @@ node_modules/
 .DS_Store
 pages - 副本/
 server - 副本/
+dist/
