@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "node -e \"const fs=require('fs'),p=require('path'),r=p.resolve('.'),d=p.join(r,'dist');if(fs.existsSync(d))fs.rmSync(d,{recursive:true});fs.cpSync(r,d,{recursive:true,filter:s=>!s.includes('node_modules')&&!s.includes('.git')&&s!==d})"
+    "build": "node -e \"const fs=require('fs'),p=require('path'),r=p.resolve('.'),d=p.join(r,'dist');if(fs.existsSync(d))fs.rmSync(d,{recursive:true});fs.cpSync(r,d,{recursive:true,filter:s=>!s.includes('node_modules')&&!s.includes('.git')&&s!==d})\""
   },
   "dependencies": {
     "nodemailer": "^6.9.0"
