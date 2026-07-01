@@ -3,7 +3,9 @@
 // 前端校验后异步请求后端，通过 QQ 邮箱 SMTP 直发
 // 无第三方平台中转，无需邮箱激活确认
 // ============================================
-var API_MAIL_URL = 'http://localhost:3001/api/contact';
+var API_MAIL_URL = window.location.origin === 'null' || window.location.protocol === 'file:'
+  ? 'http://localhost:3001/api/contact'
+  : '/api/contact';
 
 document.addEventListener('DOMContentLoaded', function() {
   var f = document.getElementById('contactForm');
