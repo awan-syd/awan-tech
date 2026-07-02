@@ -1,3 +1,5 @@
+import { connect } from 'cloudflare:sockets';
+
 export async function onRequest(context) {
   const { request, env } = context;
 
